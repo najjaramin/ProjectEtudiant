@@ -1,46 +1,15 @@
 ﻿services:
-  postgres:
+  db:
     image: postgres:15-alpine
     environment:
       POSTGRES_DB: etudiants_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-
-  redis:
-    image: redis:alpine
     ports:
-      - "6379:6379"
-
-  eureka-server:
-    build: ./eureka-server
-    ports:
-      - "8761:8761"
-
-  etudiant-service:
+      - "5432:5432"
+  api:
     build: ./api-spring-boot
-    ports:
-      - "8081:8081"
-    depends_on:
-      - postgres
-      - redis
-      - eureka-server
-
-  grading-service:
-    build: ./grading-service
-    ports:
-      - "8082:8082"
-    depends_on:
-      - postgres
-      - eureka-server
-
-  api-gateway:
-    build: ./api-gateway
     ports:
       - "8080:8080"
     depends_on:
-      - eureka-server
-
-  frontend:
-    build: ./frontend-nextjs
-    ports:
-      - "3000:3000"
+      - db
