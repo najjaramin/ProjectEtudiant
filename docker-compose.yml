@@ -5,11 +5,12 @@
       POSTGRES_DB: etudiants_db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
+  redis:
+    image: redis:alpine
   api:
     build: ./api-spring-boot
     ports:
       - "8080:8080"
     depends_on:
       - db
+      - redis
